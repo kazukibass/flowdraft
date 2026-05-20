@@ -83,7 +83,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .flow-node .node-label-input { background: transparent; border: none; color: var(--text); font-family: var(--font); font-size: 12px; line-height: 1.4; width: 100%; outline: none; resize: none; min-height: 18px; }
 .flow-node .node-sublabel { font-size: 10px; color: var(--text2); margin-top: 2px; font-family: var(--mono); }
 .flow-node .node-sublabel-input {  background: transparent;  border: 1px solid var(--border2);  color: var(--text2);  font-family: var(--mono);  font-size: 10px  width: 100%;  min-height: 42px;  resize: vertical;  overflow: auto;  outline: none;  border-radius: 6px;  padding: 6px;  }
-
+  
 /* Node type styles */
 .node-start .node-body { border-color: #2a5a2a; background: #0d1f0d; border-radius: 20px; }
 .node-start.selected .node-body { border-color: var(--green); }
@@ -649,7 +649,14 @@ function addNode(type, x, y, label, sublabel, color) {
   const def = NODE_TYPES.find(t => t.type === type) || NODE_TYPES[2];
   state.nodes[id] = {
     id, type, x, y,
-    w: type === 'decision' ? 140 : 140,
+    w:
+  type === 'decision'
+    ? 140
+  : type === 'loop-start'
+    ? 180
+  : type === 'loop-end'
+    ? 180
+  : 140,
     label: label ?? def.label,
     sublabel: sublabel ?? '',
     color: color ?? '',
@@ -1708,8 +1715,10 @@ function buildExportSVG(bounds, pad) {
     const el = document.getElementById('node-'+n.id);
     const h = el ? el.offsetHeight : 40;
     const x = n.x+ox, y = n.y+oy;
-    const typeColors = {start:'#0d1f0d',end:'#1f0d0d',process:'#0d0d1f',decision:'#16130d',db:'#0d151f',api:'#160d1f',io:'#0d1f16'};
-    const typeBorders = {start:'#2a5a2a',end:'#5a2a2a',process:'#2a2a4a',decision:'#4a3a1a',db:'#2a3a4a',api:'#3a2a4a',io:'#2a4a3a'};
+    const typeColors = {start:'#0d1f0d',end:'#1f0d0d',process:'#0d0d1f',decision:'#16130d',db:'#0d151f',api:'#160d1f',io:'#0d1f16','loop-start':'#0d1626',
+'loop-end':'#260d0d'};
+    const typeBorders = {start:'#2a5a2a',end:'#5a2a2a',process:'#2a2a4a',decision:'#4a3a1a',db:'#2a3a4a',api:'#3a2a4a',io:'#2a4a3a','loop-start':'#355a8a',
+'loop-end':'#8a3535'};
     const bg = typeColors[n.type]||'#1a1a1d';
     const bc = typeBorders[n.type]||'#333338';
     rects += `<rect x="${x}" y="${y}" width="${n.w}" height="${h}" rx="6" fill="${bg}" stroke="${bc}" stroke-width="1.5"/>`;
