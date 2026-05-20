@@ -82,7 +82,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .flow-node .node-label { font-size: 12px; color: var(--text); line-height: 1.4; word-break: break-all; }
 .flow-node .node-label-input { background: transparent; border: none; color: var(--text); font-family: var(--font); font-size: 12px; line-height: 1.4; width: 100%; outline: none; resize: none; min-height: 18px; }
 .flow-node .node-sublabel { font-size: 10px; color: var(--text2); margin-top: 2px; font-family: var(--mono); }
-.flow-node .node-sublabel-input { background: transparent; border: none; color: var(--text2); font-family: var(--mono); font-size: 10px; width: 100%; outline: none; }
+.flow-node .node-sublabel-input {  background: transparent;  border: 1px solid var(--border2);  color: var(--text2);  font-family: var(--mono);  font-size: 10px  width: 100%;  min-height: 42px;  resize: vertical;  overflow: auto;  outline: none;  border-radius: 6px;  padding: 6px;  }
 
 /* Node type styles */
 .node-start .node-body { border-color: #2a5a2a; background: #0d1f0d; border-radius: 20px; }
@@ -107,7 +107,26 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .node-io .node-body { border-radius: 0; border-color: #2a4a3a; background: #0d1f16; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
 .node-io.selected .node-body { border-color: var(--teal); }
 .node-io .node-type { color: #3a7a5a; }
+/* ── LOOP START ── */
 
+.node-loop-start .node-body {  background: #0d1626;  border-color: #355a8a;
+  clip-path: polygon(
+    8% 0%,
+    92% 0%,
+    100% 50%,
+    92% 100%,
+    8% 100%,
+    0% 50%
+  );
+  border-radius: 0;  padding: 18px 24px;  }
+.node-loop-start.selected .node-body {  border-color: var(--accent);  }
+.node-loop-start .node-type {  color: #6ea8ff;  }
+/* ── LOOP END ── */
+.node-loop-end .node-body {  background: #260d0d;  border-color: #8a3535;  border-radius: 28px;  padding: 14px 20px;  position: relative;  }
+.node-loop-end .node-body::after {  content: '';  position: absolute;  inset: 6px  border: 1.5px solid #f87171;  border-radius: 20px;  pointer-events: none;  }
+.node-loop-end.selected .node-body {  border-color: var(--red);  }
+.node-loop-end .node-type {  color: #f87171;  }
+  
 /* Connect ports */
 .port { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--bg3); border: 1.5px solid var(--border2); cursor: crosshair; opacity: 0; transition: opacity 0.12s, background 0.12s; z-index: 10; transform: translate(-50%, -50%); }
 .flow-node:hover .port, .flow-node.selected .port { opacity: 1; }
@@ -487,6 +506,8 @@ const NODE_TYPES = [
   { type: 'io',       label: 'I/O',     color: '#2dd4bf', shape: 'para' },
   { type: 'db',       label: 'DB',      color: '#2dd4bf', shape: 'db' },
   { type: 'api',      label: 'API',     color: '#a78bfa', shape: 'dashed' },
+  { type:'loop-start', label:'Loop Start', color:'#5b9cf6', shape:'loop-start' },
+  { type:'loop-end',   label:'Loop End',   color:'#f87171', shape:'loop-end' },
 ];
 
 const COLORS = ['#e8e8ea','#5b9cf6','#4ade80','#f87171','#fbbf24','#a78bfa','#2dd4bf','#f97316'];
@@ -2501,7 +2522,14 @@ function addNode(type, x, y, label, sublabel, color) {
   const def = NODE_TYPES.find(t => t.type === type) || NODE_TYPES[2];
   state.nodes[id] = {
     id, type, x, y,
-    w: type === 'decision' ? 140 : 140,
+    w:
+  type === 'decision'
+    ? 140
+  : type === 'loop-start'
+    ? 180
+  : type === 'loop-end'
+    ? 180
+  : 140,
     label: label ?? def.label,
     sublabel: sublabel ?? '',
     color: color ?? '',
