@@ -105,13 +105,12 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .node-io .node-body { border-radius: 0; border-color: #2a4a3a; background: #0d1f16; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
 .node-io.selected .node-body { border-color: var(--teal); }
 .node-io .node-type { color: #3a7a5a; }
-  /* ── LOOP START ── */
+/* ── 【安全版】ループ開始ノードの見た目 ── */
 .node-loop-start .node-body {
   background: #0d1626;
   border-color: #355a8a;
-  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
-  border-radius: 0;
-  padding: 18px 24px;
+  /* clip-pathを廃止し、角丸を六角形っぽく変形 */
+  border-radius: 14px / 28px; 
 }
 .node-loop-start.selected .node-body {
   border-color: var(--accent);
@@ -120,7 +119,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   color: #6ea8ff;
 }
 
-/* ── LOOP END ── */
+/* ── 【安全版】ループ終了ノードの見た目 ── */
 .node-loop-end .node-body {
   background: #260d0d;
   border-color: #8a3535;
@@ -128,13 +127,14 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   padding: 14px 20px;
   position: relative;
 }
+/* 内側にもう一本線を引くことで、ループ終了の二重線を表現 */
 .node-loop-end .node-body::after {
   content: '';
   position: absolute;
-  inset: 6px; /* ← ここにセミコロンが入っていれば壊れません */
-  border: 1.5px solid #f87171;
-  border-radius: 20px;
-  pointer-events: none;
+  inset: 5px;
+  border: 1px dashed #f87171;
+  border-radius: 24px;
+  pointer-events: none; /* ← これが重要！クリックを邪魔させない記述 */
 }
 .node-loop-end.selected .node-body {
   border-color: var(--red);
