@@ -203,6 +203,96 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 #notif { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r); padding: 7px 14px; font-size: 12px; color: var(--text); z-index: 2000; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; }
 #notif.show { opacity: 1; }
 
+
+/* ── MOBILE UI ── */
+#mobile-toolbar {
+  display: none;
+}
+
+.mobile-fab {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  border: 1px solid var(--border2);
+  background: rgba(22,22,24,0.92);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  font-size: 20px;
+}
+
+#mobile-toolbar .mobile-row {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 700px) {
+
+  #toolbar {
+    display: none;
+  }
+
+  #statusbar {
+    display: none;
+  }
+
+  #left-panel {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    width: 58px;
+    height: auto;
+    border-radius: 14px;
+    overflow: hidden;
+    z-index: 200;
+    background: rgba(22,22,24,0.92);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border2);
+  }
+
+  #left-panel .panel-section {
+    padding: 6px;
+    border: none;
+  }
+
+  #right-panel {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    bottom: 90px;
+    width: 180px;
+    border-radius: 14px;
+    z-index: 210;
+    background: rgba(22,22,24,0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border2);
+  }
+
+  #zoom-controls {
+    bottom: 90px;
+  }
+
+  #minimap {
+    width: 110px;
+    height: 70px;
+    bottom: 150px;
+  }
+
+  #mobile-toolbar {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: max(16px, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 300;
+  }
+}
+
 @media (max-width: 700px) {
   #left-panel { width: 48px; }
   #left-panel .panel-label, #left-panel .shape-label { display: none; }
@@ -345,6 +435,15 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
       <button class="modal-btn" onclick="closeModal('modal-new')">キャンセル</button>
       <button class="modal-btn primary" id="confirm-new">新規作成</button>
     </div>
+  </div>
+</div>
+
+
+<div id="mobile-toolbar">
+  <div class="mobile-row">
+    <button class="mobile-fab" id="m-add">＋</button>
+    <button class="mobile-fab" id="m-connect">◉</button>
+    <button class="mobile-fab" id="m-fit">⌂</button>
   </div>
 </div>
 
@@ -1767,6 +1866,44 @@ function init() {
 }
 
 init();
+
+
+// ──────────────────────────────────────────────
+// MOBILE UI
+// ──────────────────────────────────────────────
+
+const mAdd = document.getElementById('m-add');
+const mConnect = document.getElementById('m-connect');
+const mFit = document.getElementById('m-fit');
+
+if (mAdd) {
+  mAdd.addEventListener('click', () => {
+    const centerX = (-state.panX + canvasWrap.clientWidth / 2) / state.zoom;
+    const centerY = (-state.panY + canvasWrap.clientHeight / 2) / state.zoom;
+
+    addNode('process', centerX - 70, centerY - 20);
+    notify('ノード追加');
+  });
+}
+
+if (mConnect) {
+  mConnect.addEventListener('click', () => {
+    setMode(state.mode === 'connect' ? 'select' : 'connect');
+
+    mConnect.style.borderColor =
+      state.mode === 'connect'
+      ? 'var(--accent)'
+      : 'var(--border2)';
+  });
+}
+
+if (mFit) {
+  mFit.addEventListener('click', () => {
+    fitView();
+  });
+}
+
+
 </script>
 </body>
 </html>
