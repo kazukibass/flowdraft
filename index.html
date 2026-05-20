@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -8,7 +6,7 @@
 <link rel="apple-touch-icon" href="icon.png">
 <title>FlowDraft — システム設計フローチャート</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&amp;family=Geist:wght@300;400;500&amp;display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0e0e0f;
@@ -82,8 +80,8 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .flow-node .node-label { font-size: 12px; color: var(--text); line-height: 1.4; word-break: break-all; }
 .flow-node .node-label-input { background: transparent; border: none; color: var(--text); font-family: var(--font); font-size: 12px; line-height: 1.4; width: 100%; outline: none; resize: none; min-height: 18px; }
 .flow-node .node-sublabel { font-size: 10px; color: var(--text2); margin-top: 2px; font-family: var(--mono); }
-.flow-node .node-sublabel-input {  background: transparent;  border: 1px solid var(--border2);  color: var(--text2);  font-family: var(--mono);  font-size: 10px;  width: 100%;  min-height: 42px;  resize: vertical;  overflow: auto;  outline: none;  border-radius: 6px;  padding: 6px;  }
-  
+.flow-node .node-sublabel-input { background: transparent; border: none; color: var(--text2); font-family: var(--mono); font-size: 10px; width: 100%; outline: none; }
+
 /* Node type styles */
 .node-start .node-body { border-color: #2a5a2a; background: #0d1f0d; border-radius: 20px; }
 .node-start.selected .node-body { border-color: var(--green); }
@@ -107,26 +105,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .node-io .node-body { border-radius: 0; border-color: #2a4a3a; background: #0d1f16; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
 .node-io.selected .node-body { border-color: var(--teal); }
 .node-io .node-type { color: #3a7a5a; }
-/* ── LOOP START ── */
 
-.node-loop-start .node-body {  background: #0d1626;  border-color: #355a8a;
-  clip-path: polygon(
-    8% 0%,
-    92% 0%,
-    100% 50%,
-    92% 100%,
-    8% 100%,
-    0% 50%
-  );
-  border-radius: 0;  padding: 18px 24px;  }
-.node-loop-start.selected .node-body {  border-color: var(--accent);  }
-.node-loop-start .node-type {  color: #6ea8ff;  }
-/* ── LOOP END ── */
-.node-loop-end .node-body {  background: #260d0d;  border-color: #8a3535;  border-radius: 28px;  padding: 14px 20px;  position: relative;  }
-.node-loop-end .node-body::after {  content: '';  position: absolute;  inset: 6px;  border: 1.5px solid #f87171;  border-radius: 20px;  pointer-events: none;  }
-.node-loop-end.selected .node-body {  border-color: var(--red);  }
-.node-loop-end .node-type {  color: #f87171;  }
-  
 /* Connect ports */
 .port { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--bg3); border: 1.5px solid var(--border2); cursor: crosshair; opacity: 0; transition: opacity 0.12s, background 0.12s; z-index: 10; transform: translate(-50%, -50%); }
 .flow-node:hover .port, .flow-node.selected .port { opacity: 1; }
@@ -337,65 +316,48 @@ polygon.decision-selected {
     <div class="logo">flow<span>draft</span></div>
     <div class="sep"></div>
     <button class="tb-btn" id="btn-new" data-tip="新規">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="10" height="12" rx="1"/><line x1="5" y1="6" x2="9" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="10" height="12" rx="1"></rect><line x1="5" y1="6" x2="9" y2="6"></line><line x1="5" y1="9" x2="9" y2="9"></line></svg>
     </button>
     <button class="tb-btn" id="btn-tpl" data-tip="テンプレート">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"></rect><rect x="9" y="2" width="5" height="5" rx="1"></rect><rect x="2" y="9" width="5" height="5" rx="1"></rect><rect x="9" y="9" width="5" height="5" rx="1"></rect></svg>
     </button>
     <div class="sep"></div>
     <button class="tb-btn" id="btn-undo" data-tip="元に戻す">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 1 1 1.5 3.5"/><polyline points="3,4 3,8 7,8"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 1 1 1.5 3.5"></path><polyline points="3,4 3,8 7,8"></polyline></svg>
     </button>
     <button class="tb-btn" id="btn-redo" data-tip="やり直し">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 8a5 5 0 1 0-1.5 3.5"/><polyline points="13,4 13,8 9,8"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 8a5 5 0 1 0-1.5 3.5"></path><polyline points="13,4 13,8 9,8"></polyline></svg>
     </button>
     <div class="sep"></div>
     <button class="tb-btn" id="btn-conn" data-tip="接続モード (C)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="3.5" cy="8" r="1.5"/><circle cx="12.5" cy="4" r="1.5"/><circle cx="12.5" cy="12" r="1.5"/><line x1="5" y1="7.5" x2="11" y2="4.5"/><line x1="5" y1="8.5" x2="11" y2="11.5"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="3.5" cy="8" r="1.5"></circle><circle cx="12.5" cy="4" r="1.5"></circle><circle cx="12.5" cy="12" r="1.5"></circle><line x1="5" y1="7.5" x2="11" y2="4.5"></line><line x1="5" y1="8.5" x2="11" y2="11.5"></line></svg>
     </button>
-    <button class="tb-btn" id="btn-select" data-tip="選択モード (V)" class="active">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2l10 6-5 1-2 5z"/></svg>
+    <button class="tb-btn" id="btn-select" data-tip="選択モード (V)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2l10 6-5 1-2 5z"></path></svg>
     </button>
     <div class="sep"></div>
     <button class="tb-btn" id="btn-fit" data-tip="全体を表示">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5V2h3"/><path d="M11 2h3v3"/><path d="M14 11v3h-3"/><path d="M5 14H2v-3"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5V2h3"></path><path d="M11 2h3v3"></path><path d="M14 11v3h-3"></path><path d="M5 14H2v-3"></path></svg>
     </button>
     <div class="tb-title"></div>
     <input id="diagram-name" value="無題のフロー" spellcheck="false">
     <div class="tb-title"></div>
     <button class="tb-btn" id="btn-share" data-tip="共有URL">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="13" cy="3" r="1.5"/><circle cx="13" cy="13" r="1.5"/><circle cx="3" cy="8" r="1.5"/><line x1="4.5" y1="7.2" x2="11.5" y2="3.8"/><line x1="4.5" y1="8.8" x2="11.5" y2="12.2"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="13" cy="3" r="1.5"></circle><circle cx="13" cy="13" r="1.5"></circle><circle cx="3" cy="8" r="1.5"></circle><line x1="4.5" y1="7.2" x2="11.5" y2="3.8"></line><line x1="4.5" y1="8.8" x2="11.5" y2="12.2"></line></svg>
     </button>
     <button class="tb-btn" id="btn-export" data-tip="エクスポート">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m-3-3 3 3 3-3"/><path d="M3 13h10"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m-3-3 3 3 3-3"></path><path d="M3 13h10"></path></svg>
     </button>
   </div>
 
   <div id="main">
     <!-- LEFT PANEL -->
-    <div class="node-palette">
-      <div class="palette-item" data-type="loop-start">
-        <div class="shape-preview">
-      <span style="color:#5b9cf6; font-size:12px;">⬡</span>
-    </div>
-    <div class="shape-label">Loop Start</div>
-  </div>
-
-  <div class="palette-item" data-type="loop-end">
-    <div class="shape-preview">
-      <span style="color:#f87171; font-size:12px;">⬡</span>
-    </div>
-    <div class="shape-label">Loop End</div>
-  </div>
-</div>
-    
     <div id="left-panel">
       <div class="panel-section">
         <div class="panel-label">ノード</div>
         <div class="node-palette" id="palette"></div>
       </div>
     </div>
-  
 
     <!-- CANVAS -->
     <div id="canvas-wrap">
@@ -425,10 +387,10 @@ polygon.decision-selected {
 
 <!-- CONTEXT MENU -->
 <div id="ctx-menu">
-  <div class="ctx-item" id="ctx-edit"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 2l3 3-8 8H3v-3z"/></svg> ラベル編集</div>
-  <div class="ctx-item" id="ctx-dup"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1"/><path d="M2 11V2h9"/></svg> 複製</div>
+  <div class="ctx-item" id="ctx-edit"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 2l3 3-8 8H3v-3z"></path></svg> ラベル編集</div>
+  <div class="ctx-item" id="ctx-dup"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1"></rect><path d="M2 11V2h9"></path></svg> 複製</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item danger" id="ctx-del"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,4 4,14 12,14 13,4"/><line x1="2" y1="4" x2="14" y2="4"/><line x1="6" y1="7" x2="6" y2="11"/><line x1="10" y1="7" x2="10" y2="11"/></svg> 削除</div>
+  <div class="ctx-item danger" id="ctx-del"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,4 4,14 12,14 13,4"></polyline><line x1="2" y1="4" x2="14" y2="4"></line><line x1="6" y1="7" x2="6" y2="11"></line><line x1="10" y1="7" x2="10" y2="11"></line></svg> 削除</div>
 </div>
 
 <!-- MODALS -->
@@ -523,8 +485,6 @@ const NODE_TYPES = [
   { type: 'io',       label: 'I/O',     color: '#2dd4bf', shape: 'para' },
   { type: 'db',       label: 'DB',      color: '#2dd4bf', shape: 'db' },
   { type: 'api',      label: 'API',     color: '#a78bfa', shape: 'dashed' },
-  { type:'loop-start', label:'Loop Start', color:'#5b9cf6', shape:'loop-start' },
-  { type:'loop-end',   label:'Loop End',   color:'#f87171', shape:'loop-end' },
 ];
 
 const COLORS = ['#e8e8ea','#5b9cf6','#4ade80','#f87171','#fbbf24','#a78bfa','#2dd4bf','#f97316'];
@@ -666,14 +626,7 @@ function addNode(type, x, y, label, sublabel, color) {
   const def = NODE_TYPES.find(t => t.type === type) || NODE_TYPES[2];
   state.nodes[id] = {
     id, type, x, y,
-    w:
-  type === 'decision'
-    ? 140
-  : type === 'loop-start'
-    ? 180
-  : type === 'loop-end'
-    ? 180
-  : 140,
+    w: type === 'decision' ? 140 : 140,
     label: label ?? def.label,
     sublabel: sublabel ?? '',
     color: color ?? '',
@@ -1732,10 +1685,8 @@ function buildExportSVG(bounds, pad) {
     const el = document.getElementById('node-'+n.id);
     const h = el ? el.offsetHeight : 40;
     const x = n.x+ox, y = n.y+oy;
-    const typeColors = {start:'#0d1f0d',end:'#1f0d0d',process:'#0d0d1f',decision:'#16130d',db:'#0d151f',api:'#160d1f',io:'#0d1f16','loop-start':'#0d1626',
-'loop-end':'#260d0d'};
-    const typeBorders = {start:'#2a5a2a',end:'#5a2a2a',process:'#2a2a4a',decision:'#4a3a1a',db:'#2a3a4a',api:'#3a2a4a',io:'#2a4a3a','loop-start':'#355a8a',
-'loop-end':'#8a3535'};
+    const typeColors = {start:'#0d1f0d',end:'#1f0d0d',process:'#0d0d1f',decision:'#16130d',db:'#0d151f',api:'#160d1f',io:'#0d1f16'};
+    const typeBorders = {start:'#2a5a2a',end:'#5a2a2a',process:'#2a2a4a',decision:'#4a3a1a',db:'#2a3a4a',api:'#3a2a4a',io:'#2a4a3a'};
     const bg = typeColors[n.type]||'#1a1a1d';
     const bc = typeBorders[n.type]||'#333338';
     rects += `<rect x="${x}" y="${y}" width="${n.w}" height="${h}" rx="6" fill="${bg}" stroke="${bc}" stroke-width="1.5"/>`;
@@ -1961,271 +1912,6 @@ if (mFit) {
 
 
 </script>
-</body>
-</html>
-  --mono: 'DM Mono', monospace;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; -webkit-font-smoothing: antialiased; }
-
-/* ── LAYOUT ── */
-#app { display: flex; flex-direction: column; height: 100vh; }
-#toolbar { display: flex; align-items: center; gap: 8px; padding: 0 12px; height: 48px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; z-index: 100; }
-#toolbar .logo { font-family: var(--mono); font-size: 13px; color: var(--text2); letter-spacing: 0.05em; margin-right: 4px; white-space: nowrap; }
-#toolbar .logo span { color: var(--accent); }
-.sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
-.tb-btn { display: flex; align-items: center; gap: 5px; padding: 5px 9px; border-radius: var(--r); border: 1px solid transparent; background: transparent; color: var(--text2); font-family: var(--font); font-size: 12px; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
-.tb-btn:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
-.tb-btn.active { background: var(--bg3); color: var(--accent); border-color: var(--border2); }
-.tb-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-.tb-title { flex: 1; }
-#diagram-name { background: transparent; border: none; color: var(--text2); font-family: var(--mono); font-size: 12px; text-align: center; outline: none; width: 180px; cursor: pointer; }
-#diagram-name:hover, #diagram-name:focus { color: var(--text); }
-#main { display: flex; flex: 1; overflow: hidden; }
-
-/* ── LEFT PANEL ── */
-#left-panel { width: 200px; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; }
-.panel-section { padding: 10px 10px 6px; border-bottom: 1px solid var(--border); }
-.panel-label { font-size: 10px; font-family: var(--mono); color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-.node-palette { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-.palette-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 7px 4px; border-radius: var(--r); border: 1px solid var(--border); background: var(--node-bg); cursor: grab; transition: all 0.12s; user-select: none; }
-.palette-item:hover { border-color: var(--border2); background: var(--bg3); }
-.palette-item:active { cursor: grabbing; }
-.palette-item .shape-preview { display: flex; align-items: center; justify-content: center; }
-.palette-item .shape-label { font-size: 9px; color: var(--text3); font-family: var(--mono); text-align: center; }
-
-/* ── CANVAS ── */
-#canvas-wrap { flex: 1; position: relative; overflow: hidden; background: var(--bg); touch-action: none; }
-#canvas-wrap::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, var(--border) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.4; pointer-events: none; }
-#canvas { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
-#svg-layer { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
-#svg-layer.editing-conn { pointer-events: all; cursor: crosshair; }
-
-/* ── NODES ── */
-.flow-node { position: absolute; cursor: move; user-select: none; }
-.flow-node .node-inner { position: relative; min-width: 120px; }
-.flow-node .node-body { background: var(--node-bg); border: 1.5px solid var(--node-border); border-radius: var(--r); padding: 8px 12px; transition: border-color 0.12s, box-shadow 0.12s; }
-.flow-node.selected .node-body { border-color: var(--node-sel); box-shadow: 0 0 0 2px rgba(91,156,246,0.2); }
-.flow-node:hover .node-body { border-color: var(--border2); }
-.flow-node .node-type { font-size: 9px; font-family: var(--mono); color: var(--text3); margin-bottom: 3px; }
-.flow-node .node-label { font-size: 12px; color: var(--text); line-height: 1.4; word-break: break-all; }
-.flow-node .node-label-input { background: transparent; border: none; color: var(--text); font-family: var(--font); font-size: 12px; line-height: 1.4; width: 100%; outline: none; resize: none; min-height: 18px; }
-.flow-node .node-sublabel { font-size: 10px; color: var(--text2); margin-top: 2px; font-family: var(--mono); }
-.flow-node .node-sublabel-input { background: transparent; border: none; color: var(--text2); font-family: var(--mono); font-size: 10px; width: 100%; outline: none; }
-
-/* Node type styles */
-.node-start .node-body { border-color: #2a5a2a; background: #0d1f0d; border-radius: 20px; }
-.node-start.selected .node-body { border-color: var(--green); }
-.node-start .node-type { color: #4a8a4a; }
-.node-end .node-body { border-color: #5a2a2a; background: #1f0d0d; border-radius: 20px; }
-.node-end.selected .node-body { border-color: var(--red); }
-.node-end .node-type { color: #8a4a4a; }
-.node-decision .node-inner { padding: 0; }
-.node-decision .node-body { background: #16130d; border-color: #4a3a1a; transform: none; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); border-radius: 0; padding: 20px 24px; min-width: 140px; text-align: center; }
-.node-decision.selected .node-body { border-color: var(--amber); }
-.node-decision .node-type { color: #7a6030; }
-.node-process .node-body { border-color: #2a2a4a; background: #0d0d1f; }
-.node-process.selected .node-body { border-color: var(--accent); }
-.node-process .node-type { color: #4a4a8a; }
-.node-db .node-body { border-radius: var(--r) var(--r) var(--r) var(--r); border-color: #2a3a4a; background: #0d151f; }
-.node-db.selected .node-body { border-color: var(--teal); }
-.node-db .node-type { color: #3a6a7a; }
-.node-api .node-body { border-color: #3a2a4a; background: #160d1f; border-style: dashed; }
-.node-api.selected .node-body { border-color: var(--purple); border-style: solid; }
-.node-api .node-type { color: #6a4a8a; }
-.node-io .node-body { border-radius: 0; border-color: #2a4a3a; background: #0d1f16; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
-.node-io.selected .node-body { border-color: var(--teal); }
-.node-io .node-type { color: #3a7a5a; }
-
-/* Connect ports */
-.port { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--bg3); border: 1.5px solid var(--border2); cursor: crosshair; opacity: 0; transition: opacity 0.12s, background 0.12s; z-index: 10; transform: translate(-50%, -50%); }
-.flow-node:hover .port, .flow-node.selected .port { opacity: 1; }
-.port:hover { background: var(--accent); border-color: var(--accent); }
-.port.top    { top: 0;    left: 50%; }
-.port.bottom { top: 100%; left: 50%; }
-.port.left   { top: 50%;  left: 0; }
-.port.right  { top: 50%;  left: 100%; }
-
-/* Resize handle */
-.resize-handle { position: absolute; bottom: -4px; right: -4px; width: 10px; height: 10px; background: var(--border2); border-radius: 2px; cursor: se-resize; opacity: 0; transition: opacity 0.12s; }
-.flow-node.selected .resize-handle { opacity: 1; }
-
-/* ── RIGHT PANEL ── */
-#right-panel { width: 200px; background: var(--bg2); border-left: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
-#right-panel:empty { display: none; }
-.prop-section { padding: 10px; border-bottom: 1px solid var(--border); }
-.prop-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-.prop-row:last-child { margin-bottom: 0; }
-.prop-label { font-size: 10px; font-family: var(--mono); color: var(--text3); }
-.prop-input { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: var(--font); font-size: 12px; padding: 5px 8px; width: 100%; outline: none; transition: border-color 0.12s; }
-.prop-input:focus { border-color: var(--border2); }
-.prop-select { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: var(--font); font-size: 12px; padding: 5px 8px; width: 100%; outline: none; }
-.color-row { display: flex; gap: 5px; flex-wrap: wrap; }
-.color-dot { width: 18px; height: 18px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.12s; }
-.color-dot:hover, .color-dot.active { border-color: var(--text); }
-.del-btn { width: 100%; padding: 6px; border-radius: var(--r); border: 1px solid #5a2a2a; background: transparent; color: var(--red); font-family: var(--font); font-size: 11px; cursor: pointer; transition: all 0.12s; }
-.del-btn:hover { background: #1f0d0d; }
-
-/* ── CONN LABELS ── */
-.conn-label { position: absolute; transform: translate(-50%, -50%); background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; padding: 2px 6px; font-size: 10px; color: var(--text2); font-family: var(--mono); cursor: pointer; pointer-events: all; white-space: nowrap; }
-.conn-label:hover { border-color: var(--border2); color: var(--text); }
-
-/* ── MINIMAP ── */
-#minimap { position: absolute; bottom: 16px; right: 16px; width: 140px; height: 90px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; cursor: pointer; z-index: 50; }
-#minimap canvas { width: 100%; height: 100%; }
-#minimap-viewport { position: absolute; border: 1px solid var(--accent); border-radius: 2px; background: rgba(91,156,246,0.08); pointer-events: none; }
-
-/* ── STATUS BAR ── */
-#statusbar { display: flex; align-items: center; gap: 12px; padding: 0 12px; height: 26px; background: var(--bg2); border-top: 1px solid var(--border); flex-shrink: 0; }
-#statusbar span { font-size: 10px; font-family: var(--mono); color: var(--text3); }
-#statusbar .status-val { color: var(--text2); }
-
-/* ── MODAL ── */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 10px; padding: 20px; width: 360px; max-width: 90vw; }
-.modal h3 { font-size: 14px; font-weight: 500; margin-bottom: 14px; color: var(--text); }
-.modal-btn-row { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
-.modal-btn { padding: 6px 14px; border-radius: var(--r); border: 1px solid var(--border2); background: transparent; color: var(--text2); font-family: var(--font); font-size: 12px; cursor: pointer; }
-.modal-btn.primary { background: var(--accent2); border-color: var(--accent); color: #fff; }
-.modal-btn:hover { background: var(--bg3); }
-.modal-btn.primary:hover { background: var(--accent); }
-.share-url { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 8px 10px; font-family: var(--mono); font-size: 11px; color: var(--text2); word-break: break-all; margin-bottom: 8px; cursor: pointer; }
-.share-url:hover { border-color: var(--border2); }
-
-/* ── TEMPLATE GRID ── */
-.tpl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.tpl-item { border: 1px solid var(--border); border-radius: var(--r); padding: 10px 8px; cursor: pointer; background: var(--node-bg); transition: all 0.12s; }
-.tpl-item:hover { border-color: var(--border2); background: var(--bg3); }
-.tpl-item .tpl-name { font-size: 11px; color: var(--text); margin-bottom: 3px; }
-.tpl-item .tpl-desc { font-size: 9px; color: var(--text3); font-family: var(--mono); }
-
-/* ── ZOOM CONTROLS ── */
-#zoom-controls { position: absolute; bottom: 16px; left: 16px; display: flex; gap: 4px; z-index: 50; }
-.zoom-btn { width: 28px; height: 28px; border-radius: var(--r); border: 1px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
-.zoom-btn:hover { background: var(--bg3); color: var(--text); }
-#zoom-label { display: flex; align-items: center; padding: 0 8px; border-radius: var(--r); border: 1px solid var(--border); background: var(--bg2); font-size: 10px; font-family: var(--mono); color: var(--text3); }
-
-/* ── CONTEXT MENU ── */
-#ctx-menu { display: none; position: fixed; background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--r); padding: 4px; z-index: 500; min-width: 150px; box-shadow: var(--shadow); }
-#ctx-menu.open { display: block; }
-.ctx-item { padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
-.ctx-item:hover { background: var(--bg3); color: var(--text); }
-.ctx-item.danger { color: var(--red); }
-.ctx-item.danger:hover { background: #1f0d0d; }
-.ctx-sep { height: 1px; background: var(--border); margin: 3px 0; }
-
-/* ── TOOLTIP ── */
-[data-tip] { position: relative; }
-[data-tip]::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-size: 10px; font-family: var(--mono); padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.12s; }
-[data-tip]:hover::after { opacity: 1; }
-
-/* ── SELECTION BOX ── */
-#sel-box { display: none; position: absolute; border: 1px dashed var(--accent); background: rgba(91,156,246,0.05); pointer-events: none; }
-
-/* ── SCROLLBARS ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-/* ── NOTIFICATION ── */
-#notif { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r); padding: 7px 14px; font-size: 12px; color: var(--text); z-index: 2000; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; }
-#notif.show { opacity: 1; }
 
 
-/* ── MOBILE UI ── */
-#mobile-toolbar {
-  display: none;
-}
-
-.mobile-fab {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  border: 1px solid var(--border2);
-  background: rgba(22,22,24,0.92);
-  backdrop-filter: blur(10px);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow);
-  font-size: 20px;
-}
-
-#mobile-toolbar .mobile-row {
-  display: flex;
-  gap: 10px;
-}
-
-@media (max-width: 700px) {
-
-  #toolbar {
-    display: none;
-  }
-
-  #statusbar {
-    display: none;
-  }
-
-  #left-panel {
-    position: fixed;
-    left: 10px;
-    top: 10px;
-    width: 58px;
-    height: auto;
-    border-radius: 14px;
-    overflow: hidden;
-    z-index: 200;
-    background: rgba(22,22,24,0.92);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border2);
-  }
-
-  #left-panel .panel-section {
-    padding: 6px;
-    border: none;
-  }
-
-  #right-panel {
-    position: fixed;
-    right: 10px;
-    top: 10px;
-    bottom: 90px;
-    width: 180px;
-    border-radius: 14px;
-    z-index: 210;
-    background: rgba(22,22,24,0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border2);
-  }
-
-  #zoom-controls {
-    bottom: 90px;
-  }
-
-  #minimap {
-    width: 110px;
-    height: 70px;
-    bottom: 150px;
-  }
-
-  #mobile-toolbar {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: max(16px, env(safe-area-inset-bottom));
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 300;
-  }
-}
-
-@media (max-width: 700px) {
-  #left-panel { width: 48px; }
-  #left-panel .panel-label, #left-panel .shape-label { display: none; }
-  #left-panel .node-palette { grid-template-columns: 1fr; }
-  #right-panel { width: 160px; }
-  #diagram-name { width: 100px; }
-}
+</body></html>
