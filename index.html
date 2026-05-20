@@ -223,7 +223,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 /* ── TOOLTIP ── */
 [data-tip] { position: relative; }
-[data-tip]::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-size: 10px; font-family: var(--mono); padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.12s; }
+[data-tip]::after { content: attr(data-tip); position: absolute; top: 135%; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-size: 10px; font-family: var(--mono); padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.12s; }
 [data-tip]:hover::after { opacity: 1; }
 
 /* ── SELECTION BOX ── */
@@ -240,10 +240,60 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 
 /* ── MOBILE UI ── */
-#mobile-toolbar {
-  display: none;
+
+/* スマホ用ボトムバー全体の調整 */
+
+
+
+/* ############################### */  
+/* PC用ツールバーのボタンにアイコンと文字を綺麗に収める */
+#toolbar button {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative; /* ポップアップの基準点にする */
+  transition: all 0.2s ease;
 }
 
+#toolbar button:hover {
+  background: var(--border);
+  border-color: var(--text2);
+  color: #fff;
+}
+.tip-bottom::after {
+  content: attr(data-tip); /* HTMLのdata-tipの文字を表示 */
+  position: absolute;
+  top: 135%; /* ボタンの下側に配置 */
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(15, 15, 17, 0.95);
+  color: #fff;
+  border: 1px solid var(--border2);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+
+/* マウスを乗せた時（ホバー時）に下からスッと浮き出て表示 */
+.tip-bottom:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ############################### */
 .mobile-fab {
   width: 52px;
   height: 52px;
@@ -258,10 +308,60 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   box-shadow: var(--shadow);
   font-size: 20px;
 }
-
+#mobile-toolbar button {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  width: 56px;  /* 押しやすい大きさ */
+  height: 56px; /* 縦横を完全一致させて綺麗な正円に */
+  border-radius: 50%;
+  cursor: pointer;
+  
+  /* 中のアイコンと文字を縦並びに強制し、中央に寄せる */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  padding: 0;
+  margin: 0;
+  box-shadow: var(--shadow);
+  transition: transform 0.1s ease, background 0.2s ease;
+}
 #mobile-toolbar .mobile-row {
   display: flex;
-  gap: 10px;
+  gap: 16px; /* ボタン同士の間隔を少し広げて押しやすく */
+  align-items: center;
+  justify-content: center;
+}
+#mobile-toolbar button:active {
+  transform: scale(0.92); /* タップした時にペコッと凹む演出 */
+  background: var(--border);
+}
+
+/* ボタン内の「アイコン（絵文字）」の調整 */
+#mobile-toolbar button .m-icon {
+  font-size: 18px;
+  line-height: 1;
+  margin-bottom: 2px; /* 下のキャプションとの隙間 */
+}
+
+/* 上にズレたり消えたりしていた「キャプション（文字）」の絶対綺麗な調整 */
+#mobile-toolbar button .m-label {
+  font-size: 9px;
+  color: var(--text2);
+  font-weight: 500;
+  line-height: 1;
+  display: block; /* 確実に表示させる */
+  text-align: center;
+  width: 100%;
+}
+
+/* 選択中のボタンや、目立たせたいボタンの装飾 */
+#mobile-toolbar button.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(91, 156, 246, 0.1);
 }
 
 @media (max-width: 700px) {
@@ -318,13 +418,17 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
   #mobile-toolbar {
     position: fixed;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    bottom: max(16px, env(safe-area-inset-bottom));
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 300;
+    background: rgba(22, 22, 24, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px); /* Safari用のぼかし */
+    border: 1px solid var(--border2);
+    padding: 10px 16px;
+    border-radius: 20px;
+    z-index: 500;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -512,9 +616,18 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 <div id="mobile-toolbar">
   <div class="mobile-row">
-    <button class="mobile-fab" id="m-add">＋</button>
-    <button class="mobile-fab" id="m-connect">◉</button>
-    <button class="mobile-fab" id="m-fit">⌂</button>
+    <button id="m-add">
+      <span class="m-icon">➕</span>
+      <span class="m-label">追加</span>
+    </button>
+    <button id="m-connect">
+      <span class="m-icon">🔗</span>
+      <span class="m-label">接続</span>
+    </button>
+    <button id="m-fit">
+      <span class="m-icon">🔍</span>
+      <span class="m-label">全体</span>
+    </button>
   </div>
 </div>
 
