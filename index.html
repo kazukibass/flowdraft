@@ -3588,8 +3588,10 @@ function buildExportSVG(bounds, pad) {
     const el = document.getElementById('node-'+n.id);
     const h = el ? el.offsetHeight : 40;
     const x = n.x+ox, y = n.y+oy;
-    const typeColors = {start:'#0d1f0d',end:'#1f0d0d',process:'#0d0d1f',decision:'#16130d',db:'#0d151f',api:'#160d1f',io:'#0d1f16'};
-    const typeBorders = {start:'#2a5a2a',end:'#5a2a2a',process:'#2a2a4a',decision:'#4a3a1a',db:'#2a3a4a',api:'#3a2a4a',io:'#2a4a3a'};
+    const typeColors = {start:'#0d1f0d',end:'#1f0d0d',process:'#0d0d1f',decision:'#16130d',db:'#0d151f',api:'#160d1f',io:'#0d1f16','loop-start':'#0d1626',
+'loop-end':'#260d0d'};
+    const typeBorders = {start:'#2a5a2a',end:'#5a2a2a',process:'#2a2a4a',decision:'#4a3a1a',db:'#2a3a4a',api:'#3a2a4a',io:'#2a4a3a','loop-start':'#355a8a',
+'loop-end':'#8a3535'};
     const bg = typeColors[n.type]||'#1a1a1d';
     const bc = typeBorders[n.type]||'#333338';
     rects += `<rect x="${x}" y="${y}" width="${n.w}" height="${h}" rx="6" fill="${bg}" stroke="${bc}" stroke-width="1.5"/>`;
