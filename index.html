@@ -72,15 +72,15 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 /* ── NODES ── */
 .flow-node { position: absolute; cursor: move; user-select: none; }
-.flow-node .node-inner { position: relative; min-width: 120px; }
-.flow-node .node-body { background: var(--node-bg); border: 1.5px solid var(--node-border); border-radius: var(--r); padding: 8px 12px; transition: border-color 0.12s, box-shadow 0.12s; }
+.flow-node .node-inner { position: relative; width: 100%; }
+.flow-node .node-body { background: var(--node-bg); border: 1.5px solid var(--node-border); border-radius: var(--r); padding: 8px 12px; transition: border-color 0.12s, box-shadow 0.12s; min-width: 80px; }
 .flow-node.selected .node-body { border-color: var(--node-sel); box-shadow: 0 0 0 2px rgba(91,156,246,0.2); }
 .flow-node:hover .node-body { border-color: var(--border2); }
-.flow-node .node-type { font-size: 9px; font-family: var(--mono); color: var(--text3); margin-bottom: 3px; }
-.flow-node .node-label { font-size: 12px; color: var(--text); line-height: 1.4; word-break: break-all; }
-.flow-node .node-label-input { background: transparent; border: none; color: var(--text); font-family: var(--font); font-size: 12px; line-height: 1.4; width: 100%; outline: none; resize: none; min-height: 18px; }
-.flow-node .node-sublabel { font-size: 10px; color: var(--text2); margin-top: 2px; font-family: var(--mono); }
-.flow-node .node-sublabel-input { background: transparent; border: none; color: var(--text2); font-family: var(--mono); font-size: 10px; width: 100%; outline: none; }
+.flow-node .node-type { font-size: 9px; font-family: var(--mono); color: var(--text3); margin-bottom: 3px; text-align: center; }
+.flow-node .node-label { font-size: 12px; color: var(--text); line-height: 1.4; word-break: break-all; text-align: center; }
+.flow-node .node-label-input { background: transparent; border: none; color: var(--text); font-family: var(--font); font-size: 12px; line-height: 1.4; width: 100%; outline: none; resize: none; min-height: 18px; text-align: center; }
+.flow-node .node-sublabel { font-size: 10px; color: var(--text2); margin-top: 2px; font-family: var(--mono); text-align: center; }
+.flow-node .node-sublabel-input { background: transparent; border: none; color: var(--text2); font-family: var(--mono); font-size: 10px; width: 100%; outline: none; text-align: center; }
 
 /* Node type styles */
 .node-start .node-body { border-color: #2a5a2a; background: #0d1f0d; border-radius: 20px; }
@@ -419,6 +419,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
     <button class="tb-btn" id="btn-export" data-tip="エクスポート">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m-3-3 3 3 3-3"></path><path d="M3 13h10"></path></svg>
     </button>
+    <button class="tb-btn" id="btn-canvas-bg" data-tip="背景色">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><circle cx="8" cy="8" r="2.5" fill="currentColor" opacity="0.5"/></svg>
+    </button>
   </div>
 
   <div id="main">
@@ -541,6 +544,22 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-canvas-bg">
+  <div class="modal">
+    <h3>キャンバス背景色</h3>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px" id="canvas-bg-presets">
+      <!-- filled by JS -->
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <input type="color" id="canvas-bg-custom" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);padding:2px;cursor:pointer;background:transparent;">
+      <span style="font-size:11px;color:var(--text2);font-family:var(--mono)">カスタムカラー</span>
+    </div>
+    <div class="modal-btn-row">
+      <button class="modal-btn" onclick="closeModal('modal-canvas-bg')">閉じる</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modal-new">
   <div class="modal">
     <h3>新しいフローを作成</h3>
@@ -562,6 +581,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
     <button class="mobile-fab" id="m-connect">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="3.5" cy="8" r="1.5"/><circle cx="12.5" cy="4" r="1.5"/><circle cx="12.5" cy="12" r="1.5"/><line x1="5" y1="7.5" x2="11" y2="4.5"/><line x1="5" y1="8.5" x2="11" y2="11.5"/></svg>
       接続
+    </button>
+    <button class="mobile-fab" id="m-export">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m-3-3 3 3 3-3"/><path d="M3 13h10"/></svg>
+      保存
     </button>
     <button class="mobile-fab icon-only" id="m-fit" title="全体を表示">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5V2h3"/><path d="M11 2h3v3"/><path d="M14 11v3h-3"/><path d="M5 14H2v-3"/><circle cx="8" cy="8" r="2"/></svg>
@@ -1682,7 +1705,8 @@ function autosave() {
   try {
     localStorage.setItem('flowdraft_data', JSON.stringify({
       nodes: state.nodes, conns: state.conns, nextId: state.nextId,
-      name: document.getElementById('diagram-name').value
+      name: document.getElementById('diagram-name').value,
+      canvasBg: state.canvasBg || '', canvasDot: state.canvasDot || ''
     }));
   } catch(e) {}
 }
@@ -1695,6 +1719,7 @@ function loadSaved() {
     state.conns = data.conns || {};
     state.nextId = data.nextId || 1;
     if (data.name) document.getElementById('diagram-name').value = data.name;
+    if (data.canvasBg) applyCanvasBg(data.canvasBg, data.canvasDot, false);
     return true;
   } catch(e) { return false; }
 }
@@ -2035,6 +2060,7 @@ const mAdd = document.getElementById('m-add');
 const mConnect = document.getElementById('m-connect');
 const mFit = document.getElementById('m-fit');
 const mReset = document.getElementById('m-reset');
+const mExport = document.getElementById('m-export');
 
 if (mAdd) {
   mAdd.addEventListener('click', () => {
@@ -2050,6 +2076,10 @@ if (mConnect) {
     setMode(state.mode === 'connect' ? 'select' : 'connect');
     mConnect.classList.toggle('connect-active', state.mode === 'connect');
   });
+}
+
+if (mExport) {
+  mExport.addEventListener('click', () => openModal('modal-export'));
 }
 
 if (mFit) {
@@ -2070,6 +2100,69 @@ if (mReset) {
     notify('初期位置に戻しました');
   });
 }
+
+// ──────────────────────────────────────────────
+// CANVAS BACKGROUND COLOR
+// ──────────────────────────────────────────────
+const CANVAS_BG_PRESETS = [
+  { label: 'ダーク',    bg: '#0e0e0f', dot: '#2a2a2e' },
+  { label: 'ミッドナイト', bg: '#080c14', dot: '#1a2030' },
+  { label: 'ディープ',  bg: '#0a0a0a', dot: '#222222' },
+  { label: 'スレート',  bg: '#0f1117', dot: '#252830' },
+  { label: 'グレー',   bg: '#1a1a1a', dot: '#303030' },
+  { label: 'ウォーム',  bg: '#100e0c', dot: '#2a2520' },
+  { label: 'ペーパー',  bg: '#f5f0e8', dot: '#c8c0b0' },
+  { label: 'ライト',   bg: '#f8f8fa', dot: '#d0d0d8' },
+  { label: 'クリーム',  bg: '#fafaf5', dot: '#d8d8c8' },
+  { label: 'ブルー',   bg: '#090e18', dot: '#162030' },
+];
+
+function applyCanvasBg(bg, dot, save = true) {
+  state.canvasBg = bg;
+  state.canvasDot = dot || adjustDotColor(bg);
+  canvasWrap.style.background = bg;
+  let styleEl = document.getElementById('canvas-bg-style');
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'canvas-bg-style';
+    document.head.appendChild(styleEl);
+  }
+  const dotColor = state.canvasDot;
+  styleEl.textContent = `#canvas-wrap::before { background-image: radial-gradient(circle, ${dotColor} 1px, transparent 1px); }`;
+  if (save) autosave();
+}
+
+function adjustDotColor(bg) {
+  // simple luminance check: if light bg, use dark dot; if dark, use lighter dot
+  const hex = bg.replace('#','');
+  const r = parseInt(hex.substring(0,2),16);
+  const g = parseInt(hex.substring(2,4),16);
+  const b = parseInt(hex.substring(4,6),16);
+  const lum = (r*299 + g*587 + b*114) / 1000;
+  return lum > 128 ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.12)';
+}
+
+document.getElementById('btn-canvas-bg').addEventListener('click', () => {
+  const grid = document.getElementById('canvas-bg-presets');
+  grid.innerHTML = CANVAS_BG_PRESETS.map((p,i) => `
+    <div style="cursor:pointer;border-radius:8px;overflow:hidden;border:2px solid ${(state.canvasBg||'#0e0e0f')===p.bg?'var(--accent)':'var(--border)'};transition:border-color 0.12s" data-bg="${p.bg}" data-dot="${p.dot}" title="${p.label}">
+      <div style="height:36px;background:${p.bg};position:relative;display:flex;align-items:center;justify-content:center">
+        <span style="font-size:8px;font-family:var(--mono);color:${p.bg==='#f5f0e8'||p.bg==='#f8f8fa'||p.bg==='#fafaf5'?'#555':'#888'}">${p.label}</span>
+      </div>
+    </div>`).join('');
+  grid.querySelectorAll('[data-bg]').forEach(el => {
+    el.addEventListener('click', () => {
+      applyCanvasBg(el.dataset.bg, el.dataset.dot);
+      closeModal('modal-canvas-bg');
+      notify('背景色を変更しました');
+    });
+  });
+  const custom = document.getElementById('canvas-bg-custom');
+  custom.value = state.canvasBg || '#0e0e0f';
+  custom.addEventListener('input', e => applyCanvasBg(e.target.value));
+  custom.addEventListener('change', () => notify('背景色を変更しました'));
+  openModal('modal-canvas-bg');
+});
 
 
 </script>
