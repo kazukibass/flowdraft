@@ -91,6 +91,8 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .node-end .node-type { color: #8a4a4a; }
 .node-decision .node-inner { padding: 0; }
 .node-decision .node-body { background: #16130d; border-color: #4a3a1a; transform: none; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); border-radius: 0; padding: 20px 24px; min-width: 140px; text-align: center; }
+.node-decision .node-inner { transition: filter 0.12s; }
+.node-decision.selected .node-inner { filter: drop-shadow(0 0 4px rgba(251,191,36,0.7)); }
 .node-decision.selected .node-body { border-color: var(--amber); }
 .node-decision .node-type { color: #7a6030; }
 .node-process .node-body { border-color: #2a2a4a; background: #0d0d1f; }
@@ -105,43 +107,73 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .node-io .node-body { border-radius: 0; border-color: #2a4a3a; background: #0d1f16; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
 .node-io.selected .node-body { border-color: var(--teal); }
 .node-io .node-type { color: #3a7a5a; }
-/* ── 【安全版】ループ開始ノードの見た目 ── */
+/* ── ループ開始：蒲鉾型（上バーで挟む） ── */
 .node-loop-start .node-body {
-  background: #0d1626;
-  border-color: #355a8a;
-  /* clip-pathを廃止し、角丸を六角形っぽく変形 */
-  border-radius: 14px / 28px; 
-}
-.node-loop-start.selected .node-body {
-  border-color: var(--accent);
-}
-.node-loop-start .node-type {
-  color: #6ea8ff;
-}
-
-/* ── 【安全版】ループ終了ノードの見た目 ── */
-.node-loop-end .node-body {
-  background: #260d0d;
-  border-color: #8a3535;
-  border-radius: 28px;
-  padding: 14px 20px;
+  background: #0a1520;
+  border: none;
+  border-radius: 0;
+  padding: 0;
   position: relative;
+  overflow: visible;
 }
-/* 内側にもう一本線を引くことで、ループ終了の二重線を表現 */
+.node-loop-start .node-body::before,
+.node-loop-start .node-body::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #1a4a8a 0%, #3b82f6 50%, #1a4a8a 100%);
+  border-radius: 99px;
+  pointer-events: none;
+}
+.node-loop-start .node-body::before { top: -1px; }
+.node-loop-start .node-body::after  { bottom: -1px; }
+.node-loop-start .node-inner-pad {
+  background: #0a1520;
+  border-left: 1.5px solid #1e3a60;
+  border-right: 1.5px solid #1e3a60;
+  padding: 8px 14px;
+}
+.node-loop-start.selected .node-body::before,
+.node-loop-start.selected .node-body::after {
+  background: linear-gradient(90deg, #2563eb 0%, #60a5fa 50%, #2563eb 100%);
+  box-shadow: 0 0 6px rgba(96,165,250,0.5);
+}
+.node-loop-start .node-type { color: #3b82f6; }
+
+/* ── ループ終了：蒲鉾型（下バーで挟む・アンバー） ── */
+.node-loop-end .node-body {
+  background: #1a1206;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  position: relative;
+  overflow: visible;
+}
+.node-loop-end .node-body::before,
 .node-loop-end .node-body::after {
   content: '';
   position: absolute;
-  inset: 5px;
-  border: 1px dashed #f87171;
-  border-radius: 24px;
-  pointer-events: none; /* ← これが重要！クリックを邪魔させない記述 */
+  left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #7c4a00 0%, #f59e0b 50%, #7c4a00 100%);
+  border-radius: 99px;
+  pointer-events: none;
 }
-.node-loop-end.selected .node-body {
-  border-color: var(--red);
+.node-loop-end .node-body::before { top: -1px; }
+.node-loop-end .node-body::after  { bottom: -1px; }
+.node-loop-end .node-inner-pad {
+  background: #1a1206;
+  border-left: 1.5px solid #503010;
+  border-right: 1.5px solid #503010;
+  padding: 8px 14px;
 }
-.node-loop-end .node-type {
-  color: #f87171;
+.node-loop-end.selected .node-body::before,
+.node-loop-end.selected .node-body::after {
+  background: linear-gradient(90deg, #d97706 0%, #fcd34d 50%, #d97706 100%);
+  box-shadow: 0 0 6px rgba(251,191,36,0.5);
 }
+.node-loop-end .node-type { color: #f59e0b; }
 
 /* Connect ports */
 .port { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--bg3); border: 1.5px solid var(--border2); cursor: crosshair; opacity: 0; transition: opacity 0.12s, background 0.12s; z-index: 10; transform: translate(-50%, -50%); }
@@ -223,7 +255,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 /* ── TOOLTIP ── */
 [data-tip] { position: relative; }
-[data-tip]::after { content: attr(data-tip); position: absolute; top: calc(100% + 6px); left: 0; transform: None; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-size: 10px; font-family: var(--mono); padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.12s; }
+[data-tip]::after { content: attr(data-tip); position: fixed; margin-top: 32px; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-size: 10px; font-family: var(--mono); padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.12s; z-index: 9999; transform: translateX(-25%); }
 [data-tip]:hover::after { opacity: 1; }
 
 /* ── SELECTION BOX ── */
@@ -245,23 +277,34 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 }
 
 .mobile-fab {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
+  height: 44px;
+  border-radius: 12px;
   border: 1px solid var(--border2);
-  background: rgba(22,22,24,0.92);
-  backdrop-filter: blur(10px);
+  background: rgba(22,22,24,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow);
-  font-size: 20px;
+  gap: 6px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.6);
+  padding: 0 14px;
+  font-family: var(--font);
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
 }
+.mobile-fab:active { opacity: 0.7; transform: scale(0.96); }
+.mobile-fab svg { width: 16px; height: 16px; flex-shrink: 0; }
+.mobile-fab.icon-only { width: 44px; padding: 0; }
+.mobile-fab.connect-active { border-color: var(--accent); color: var(--accent); background: rgba(91,156,246,0.15); }
 
 #mobile-toolbar .mobile-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  align-items: center;
 }
 
 @media (max-width: 700px) {
@@ -512,9 +555,20 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 <div id="mobile-toolbar">
   <div class="mobile-row">
-    <button class="mobile-fab" id="m-add">＋</button>
-    <button class="mobile-fab" id="m-connect">◉</button>
-    <button class="mobile-fab" id="m-fit">⌂</button>
+    <button class="mobile-fab" id="m-add">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+      追加
+    </button>
+    <button class="mobile-fab" id="m-connect">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="3.5" cy="8" r="1.5"/><circle cx="12.5" cy="4" r="1.5"/><circle cx="12.5" cy="12" r="1.5"/><line x1="5" y1="7.5" x2="11" y2="4.5"/><line x1="5" y1="8.5" x2="11" y2="11.5"/></svg>
+      接続
+    </button>
+    <button class="mobile-fab icon-only" id="m-fit" title="全体を表示">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5V2h3"/><path d="M11 2h3v3"/><path d="M14 11v3h-3"/><path d="M5 14H2v-3"/><circle cx="8" cy="8" r="2"/></svg>
+    </button>
+    <button class="mobile-fab icon-only" id="m-reset" title="初期位置に戻す">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 1 1 1.5 3.5"/><polyline points="3,4 3,8 7,8"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg>
+    </button>
   </div>
 </div>
 
@@ -687,7 +741,7 @@ function paletteTouchEnd(e) {
 // ──────────────────────────────────────────────
 // NODES
 // ──────────────────────────────────────────────
-function addNode(type, x, y, label, sublabel, color) {
+function addNode(type, x, y, label, sublabel, color, bgColor) {
   const id = uid();
   const def = NODE_TYPES.find(t => t.type === type) || NODE_TYPES[2];
   state.nodes[id] = {
@@ -696,6 +750,7 @@ function addNode(type, x, y, label, sublabel, color) {
     label: label ?? def.label,
     sublabel: sublabel ?? '',
     color: color ?? '',
+    bgColor: bgColor ?? '',
   };
   snapshot();
   renderNode(id);
@@ -719,12 +774,21 @@ function renderNode(id) {
   el.style.top = n.y + 'px';
   el.style.width = n.w + 'px';
   const colorStyle = n.color ? `color:${n.color}` : '';
-  el.innerHTML = `
-    <div class="node-inner">
-      <div class="node-body" style="${colorStyle}">
+  const bgStyle = n.bgColor ? `background:${n.bgColor}` : '';
+  const isLoop = n.type === 'loop-start' || n.type === 'loop-end';
+  const innerContent = `
         <div class="node-type">${NODE_TYPES.find(t=>t.type===n.type)?.label||n.type}</div>
         <div class="node-label" id="label-${id}">${escHtml(n.label)}</div>
-        ${n.sublabel ? `<div class="node-sublabel">${escHtml(n.sublabel)}</div>` : ''}
+        ${n.sublabel ? `<div class="node-sublabel">${escHtml(n.sublabel)}</div>` : ''}`;
+  const innerStyle = [colorStyle, isLoop && bgStyle ? bgStyle : ''].filter(Boolean).join(';');
+  const bodyStyle = !isLoop ? [colorStyle, bgStyle].filter(Boolean).join(';') : '';
+  const bodyContent = isLoop
+    ? `<div class="node-inner-pad"${innerStyle ? ` style="${innerStyle}"` : ''}>${innerContent}</div>`
+    : innerContent;
+  el.innerHTML = `
+    <div class="node-inner">
+      <div class="node-body"${bodyStyle ? ` style="${bodyStyle}"` : ''}>
+        ${bodyContent}
       </div>
       <div class="port top" data-port="top" data-node="${id}"></div>
       <div class="port bottom" data-port="bottom" data-node="${id}"></div>
@@ -1085,28 +1149,28 @@ function portTouchStart(e) {
 let panning = false, panStart = null;
 canvasWrap.addEventListener('mousedown', e => {
   if (e.target !== canvasWrap && e.target !== canvas && e.target.id !== 'svg-layer') return;
+  // 右クリック・中クリックは選択ボックス起動しない
+  if (e.button !== 0) return;
 
   // 左クリックでパン開始
-  if (e.button === 0) {
-    panning = true;
-    panStart = {
-      x: e.clientX - state.panX,
-      y: e.clientY - state.panY
-    };
+  panning = true;
+  panStart = {
+    x: e.clientX - state.panX,
+    y: e.clientY - state.panY
+  };
+  e.preventDefault();
 
-    e.preventDefault();
-
-    // start selection box
-    const cp = clientToCanvas(e);
-    selBox.start = cp;
-    selBox.active = true;
-    const sb = document.getElementById('sel-box');
-    sb.style.display = 'block';
-    sb.style.left = cp.x + 'px'; sb.style.top = cp.y + 'px';
-    sb.style.width = '0'; sb.style.height = '0';
-    // deselect
-    if (!e.shiftKey) { state.selected.clear(); renderSelection(); updateRightPanel(); }
-  }
+  // start selection box
+  const cp = clientToCanvas(e);
+  selBox.start = cp;
+  selBox.active = true;
+  selBox.isPanning = false;
+  const sb = document.getElementById('sel-box');
+  sb.style.display = 'none';
+  sb.style.left = cp.x + 'px'; sb.style.top = cp.y + 'px';
+  sb.style.width = '0'; sb.style.height = '0';
+  // deselect
+  if (!e.shiftKey) { state.selected.clear(); renderSelection(); updateRightPanel(); }
 });
 canvasWrap.addEventListener('dblclick', e => {
   if (e.target !== canvasWrap && e.target !== canvas && e.target.id !== 'svg-layer') return;
@@ -1120,16 +1184,26 @@ document.addEventListener('mousemove', e => {
     state.panY = e.clientY - panStart.y;
     applyTransform();
     drawMinimap();
+    // パン中は選択ボックス非表示
+    if (selBox.active) {
+      selBox.isPanning = true;
+      document.getElementById('sel-box').style.display = 'none';
+    }
   }
-  if (selBox.active) {
+  if (selBox.active && !selBox.isPanning) {
     const cp = clientToCanvas(e);
-    const x = Math.min(cp.x, selBox.start.x);
-    const y = Math.min(cp.y, selBox.start.y);
-    const w = Math.abs(cp.x - selBox.start.x);
-    const h = Math.abs(cp.y - selBox.start.y);
-    const sb = document.getElementById('sel-box');
-    sb.style.left = x + 'px'; sb.style.top = y + 'px';
-    sb.style.width = w + 'px'; sb.style.height = h + 'px';
+    const dx = Math.abs(cp.x - selBox.start.x);
+    const dy = Math.abs(cp.y - selBox.start.y);
+    if (dx > 6 || dy > 6) {
+      const x = Math.min(cp.x, selBox.start.x);
+      const y = Math.min(cp.y, selBox.start.y);
+      const w = Math.abs(cp.x - selBox.start.x);
+      const h = Math.abs(cp.y - selBox.start.y);
+      const sb = document.getElementById('sel-box');
+      sb.style.display = 'block';
+      sb.style.left = x + 'px'; sb.style.top = y + 'px';
+      sb.style.width = w + 'px'; sb.style.height = h + 'px';
+    }
   }
 });
 document.addEventListener('mouseup', e => {
@@ -1347,7 +1421,7 @@ function renderNodeProps(id) {
       </div>
       <div class="prop-row">
         <div class="prop-label">サブテキスト</div>
-        <input class="prop-input" id="prop-sub" value="${n.sublabel||''}">
+        <textarea class="prop-input" id="prop-sub" rows="1" style="resize:none;overflow:hidden;field-sizing:content;min-height:28px">${n.sublabel||''}</textarea>
       </div>
       <div class="prop-row">
         <div class="prop-label">ノードタイプ</div>
@@ -1356,10 +1430,12 @@ function renderNodeProps(id) {
         </select>
       </div>
       <div class="prop-row">
-        <div class="prop-label">テキストカラー</div>
+        <div class="prop-label">背景カラー</div>
         <div class="color-row">
-          ${COLORS.map(c=>`<div class="color-dot${n.color===c?' active':''}" style="background:${c}" data-color="${c}"></div>`).join('')}
-          <div class="color-dot${!n.color?' active':''}" style="background:var(--node-border);border:1px dashed var(--border2)" data-color=""></div>
+          ${['','#0d1520','#0d1f0d','#1f0d0d','#16130d','#160d1f','#0d151f','#1a1000'].map(c=>
+            `<div class="color-dot bg-dot${(n.bgColor||'')===c?' active':''}" style="background:${c||'var(--node-border)'};${!c?'border:1px dashed var(--border2)':''}" data-color="${c}"></div>`
+          ).join('')}
+          <input type="color" id="bg-color-picker" value="${n.bgColor||'#1a1a1d'}" style="width:18px;height:18px;border-radius:50%;border:2px solid transparent;padding:0;cursor:pointer;background:transparent;" title="カスタムカラー">
         </div>
       </div>
     </div>
@@ -1373,6 +1449,8 @@ function renderNodeProps(id) {
   document.getElementById('prop-label').addEventListener('change', () => snapshot());
   document.getElementById('prop-sub').addEventListener('input', e => {
     n.sublabel = e.target.value;
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
     renderNode(id);
   });
   document.getElementById('prop-sub').addEventListener('change', () => snapshot());
@@ -1380,12 +1458,20 @@ function renderNodeProps(id) {
     n.type = e.target.value;
     snapshot(); renderNode(id); renderConns();
   });
-  rightPanel.querySelectorAll('.color-dot').forEach(dot => {
+  rightPanel.querySelectorAll('.bg-dot').forEach(dot => {
     dot.addEventListener('click', () => {
-      n.color = dot.dataset.color;
+      n.bgColor = dot.dataset.color;
       snapshot(); renderNode(id); updateRightPanel();
     });
   });
+  const picker = document.getElementById('bg-color-picker');
+  if (picker) {
+    picker.addEventListener('input', e => {
+      n.bgColor = e.target.value;
+      renderNode(id);
+    });
+    picker.addEventListener('change', () => snapshot());
+  }
   document.getElementById('prop-del').addEventListener('click', () => removeNode(id));
 }
 
@@ -1948,12 +2034,12 @@ init();
 const mAdd = document.getElementById('m-add');
 const mConnect = document.getElementById('m-connect');
 const mFit = document.getElementById('m-fit');
+const mReset = document.getElementById('m-reset');
 
 if (mAdd) {
   mAdd.addEventListener('click', () => {
     const centerX = (-state.panX + canvasWrap.clientWidth / 2) / state.zoom;
     const centerY = (-state.panY + canvasWrap.clientHeight / 2) / state.zoom;
-
     addNode('process', centerX - 70, centerY - 20);
     notify('ノード追加');
   });
@@ -1962,17 +2048,26 @@ if (mAdd) {
 if (mConnect) {
   mConnect.addEventListener('click', () => {
     setMode(state.mode === 'connect' ? 'select' : 'connect');
-
-    mConnect.style.borderColor =
-      state.mode === 'connect'
-      ? 'var(--accent)'
-      : 'var(--border2)';
+    mConnect.classList.toggle('connect-active', state.mode === 'connect');
   });
 }
 
 if (mFit) {
   mFit.addEventListener('click', () => {
     fitView();
+    notify('全体を表示');
+  });
+}
+
+if (mReset) {
+  mReset.addEventListener('click', () => {
+    state.zoom = 1;
+    state.panX = canvasWrap.clientWidth / 2 - 200;
+    state.panY = 40;
+    applyTransform();
+    updateZoomLabel();
+    drawMinimap();
+    notify('初期位置に戻しました');
   });
 }
 
