@@ -1771,9 +1771,14 @@ document.getElementById('exp-png').addEventListener('click', () => {
   const blob = new Blob([svgStr], {type:'image/svg+xml'});
   const url = URL.createObjectURL(blob);
   img.onload = () => {
+    
     const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
     const ctx = cv.getContext('2d');
-    ctx.fillStyle = '#0e0e0f'; ctx.fillRect(0,0,w,h);
+    const bg = getComputedStyle(document.documentElement)
+      .getPropertyValue('--bg')
+      .trim();
+    ctx.fillStyle = bg;
+    ctx.fillRect(0,0,w,h);
     ctx.drawImage(img, 0, 0, w, h);
     cv.toBlob(b => {
       const a = document.createElement('a'); a.href = URL.createObjectURL(b);
