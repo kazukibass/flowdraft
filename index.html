@@ -9,27 +9,27 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&amp;family=Geist:wght@300;400;500&amp;display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0e0e0f;
-  --bg2: #161618;
-  --bg3: #1e1e21;
-  --border: #2a2a2e;
-  --border2: #3a3a40;
-  --text: #e8e8ea;
-  --text2: #888890;
-  --text3: #55555c;
-  --accent: #5b9cf6;
-  --accent2: #3d7ee8;
+  --bg: #f5f6f8;
+  --bg2: #ffffff;
+  --bg3: #eef1f5;
+  --border: #d7dbe3;
+  --border2: #bcc4d1;
+  --text: #1f2937;
+  --text2: #5b6472;
+  --text3: #8a94a6;
+  --accent: #4f8df5;
+  --accent2: #3b7ae6;
   --green: #4ade80;
   --amber: #fbbf24;
   --red: #f87171;
   --purple: #a78bfa;
   --teal: #2dd4bf;
-  --node-bg: #1a1a1d;
-  --node-border: #333338;
-  --node-sel: #5b9cf6;
-  --conn: #444450;
-  --conn-hover: #6666aa;
-  --shadow: 0 2px 12px rgba(0,0,0,0.5);
+  --node-bg: #ffffff;
+  --node-border: #cfd6e2;
+  --node-sel: #4f8df5;
+  --conn: #94a3b8;
+  --conn-hover: #6366f1;
+  --shadow: 0 2px 10px rgba(0,0,0,0.08);
   --r: 6px;
   --font: 'Geist', sans-serif;
   --mono: 'DM Mono', monospace;
@@ -82,72 +82,63 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .flow-node .node-sublabel { font-size: 10px; color: var(--text2); margin-top: 2px; font-family: var(--mono); text-align: left; z-index: 15; }
 .flow-node .node-sublabel-input { background: transparent; border: none; color: var(--text2); font-family: var(--mono); font-size: 10px; width: 100%; resize: none; text-align: center; }
 
-/* Node type styles */
+/* light mode
+.node-start .node-body { border-color: #86d89f; background: #edfdf3; border-radius: 20px; }
+.node-end .node-body {border-color: #f0a0a0; background: #fff1f1; border-radius: 20px; }
+.node-decision .node-body { background: #fff8e8; border-color: #e3c36a; transform: none; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); border-radius: 0; padding: 20px 24px; min-width: 140px; text-align: center; }
+.node-process .node-body { border-color: #9eb8f5; background: #eef4ff; }
+.node-db .node-body { border-radius: var(--r) var(--r) var(--r) var(--r);border-color: #8fd6de; background: #edfdfd; }
+.node-api .node-body { border-color: #c5a9f7; background: #f6f0ff;  border-style: dashed;}
+.node-io .node-body { border-color: #8fd8bf; background: #edfff7; }
+.node-loop-start .node-body { background: #edf5ff; border: 1.5px solid #93bdf5; }
+.node-loop-end .node-body { background: #fff6e8; border: 1.5px solid #e6be6a; }
+*/
+/* dark mode
 .node-start .node-body { border-color: #2a5a2a; background: #0d1f0d; border-radius: 20px; }
+.node-end .node-body { border-color: #5a2a2a; background: #1f0d0d; border-radius: 20px; }
+.node-decision .node-body { background: #16130d; border-color: #4a3a1a; transform: none; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); border-radius: 0; padding: 20px 24px; min-width: 140px; text-align: center; }
+.node-process .node-body { border-color: #2a2a4a; background: #0d0d1f; }
+.node-db .node-body { border-radius: var(--r) var(--r) var(--r) var(--r); border-color: #2a3a4a; background: #0d151f; }
+.node-api .node-body { border-color: #3a2a4a; background: #160d1f; border-style: dashed; }
+.node-io .node-body { border-radius: 0; border-color: #2a4a3a; background: #0d1f16; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
+.node-loop-start .node-body { background: #0a1520; border: 1.5px solid #1e3a60; border-radius: 16px 16px 0 0; padding: 8px 14px; position: relative; overflow: visible; }
+.node-loop-end .node-body { background: #1a1206; border: 1.5px solid #503010; border-radius: 0 0 16px 16px; padding: 8px 14px; position: relative; overflow: visible; }
+*/
+
+/* Node type styles */
+.node-start .node-body { border-color: #86d89f; background: #edfdf3; border-radius: 20px; }
 .node-start.selected .node-body { border-color: var(--green); }
 .node-start .node-type { color: #4a8a4a; }
-.node-end .node-body { border-color: #5a2a2a; background: #1f0d0d; border-radius: 20px; }
+.node-end .node-body { border-color: #f0a0a0; background: #fff1f1; border-radius: 20px; }
 .node-end.selected .node-body { border-color: var(--red); }
 .node-end .node-type { color: #8a4a4a; }
 .node-decision .node-inner { padding: 0; }
-.node-decision .node-body { background: #16130d; border-color: #4a3a1a; transform: none; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); border-radius: 0; padding: 20px 24px; min-width: 140px; text-align: center; }
+.node-decision .node-body { background: #fff8e8; border-color: #e3c36a; transform: none; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); border-radius: 0; padding: 20px 24px; min-width: 140px; text-align: center; }
 .node-decision .node-inner { transition: filter 0.12s; }
 .node-decision.selected .node-inner { filter: drop-shadow(0 0 4px rgba(251,191,36,0.7)); }
 .node-decision.selected .node-body { border-color: var(--amber); }
 /* node-type は clip-path の外に置いて z-index で浮かせる */
-.node-decision .node-type {
-  color: #7a6030;
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  pointer-events: none;
-  white-space: nowrap;
-  font-size: 9px;
-  font-family: var(--mono);
-  letter-spacing: 0.05em;
-}
-.node-process .node-body { border-color: #2a2a4a; background: #0d0d1f; }
+.node-decision .node-type { color: #7a6030; position: absolute; top: 4px; left: 50%; transform: translateX(-50%); z-index: 20; pointer-events: none; white-space: nowrap; font-size: 9px; font-family: var(--mono); letter-spacing: 0.05em; }
+.node-process .node-body { border-color: #9eb8f5; background: #eef4ff; }
 .node-process.selected .node-body { border-color: var(--accent); }
 .node-process .node-type { color: #4a4a8a; }
-.node-db .node-body { border-radius: var(--r) var(--r) var(--r) var(--r); border-color: #2a3a4a; background: #0d151f; }
+.node-db .node-body { border-radius: var(--r) var(--r) var(--r) var(--r); border-color: #8fd6de; background: #edfdfd; }
 .node-db.selected .node-body { border-color: var(--teal); }
 .node-db .node-type { color: #3a6a7a; }
-.node-api .node-body { border-color: #3a2a4a; background: #160d1f; border-style: dashed; }
+.node-api .node-body { border-color: #c5a9f7; background: #f6f0ff; border-style: dashed; }
 .node-api.selected .node-body { border-color: var(--purple); border-style: solid; }
 .node-api .node-type { color: #6a4a8a; }
-.node-io .node-body { border-radius: 0; border-color: #2a4a3a; background: #0d1f16; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
+.node-io .node-body { border-radius: 0; border-color: #8fd8bf; background: #edfff7; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); padding: 8px 24px; }
 .node-io.selected .node-body { border-color: var(--teal); }
 .node-io .node-type { color: #3a7a5a; }
 /* ── ループ開始：上2角を丸く ── */
-.node-loop-start .node-body {
-  background: #0a1520;
-  border: 1.5px solid #1e3a60;
-  border-radius: 16px 16px 0 0;
-  padding: 8px 14px;
-  position: relative;
-  overflow: visible;
-}
-.node-loop-start.selected .node-body {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 2px rgba(96,165,250,0.2);
-}
+.node-loop-start .node-body { background: #edf5ff; border: 1.5px solid #93bdf5; border-radius: 16px 16px 0 0; padding: 8px 14px; position: relative; overflow: visible; }
+.node-loop-start.selected .node-body { border-color: #60a5fa; box-shadow: 0 0 0 2px rgba(96,165,250,0.2); }
 .node-loop-start .node-type { color: #3b82f6; }
 
 /* ── ループ終了：下2角を丸く ── */
-.node-loop-end .node-body {
-  background: #1a1206;
-  border: 1.5px solid #503010;
-  border-radius: 0 0 16px 16px;
-  padding: 8px 14px;
-  position: relative;
-  overflow: visible;
-}
-.node-loop-end.selected .node-body {
-  border-color: #fcd34d;
-  box-shadow: 0 0 0 2px rgba(251,191,36,0.2);
-}
+.node-loop-end .node-body { background: #fff6e8; border: 1.5px solid #e6be6a; border-radius: 0 0 16px 16px; padding: 8px 14px; position: relative; overflow: visible; }
+.node-loop-end.selected .node-body { border-color: #fcd34d; box-shadow: 0 0 0 2px rgba(251,191,36,0.2); }
 .node-loop-end .node-type { color: #f59e0b; }
 
 /* Connect ports */
@@ -411,7 +402,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
     <!-- CANVAS -->
     <div id="canvas-wrap">
       <div id="canvas" style="transform: translate(-6.922879px, 26.807198px) scale(1.383033);">
-        <svg id="svg-layer" width="4000" height="4000"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><g data-conn-id="c5"><path d="M 158 239 C 158 299.5 134 299.5 134 360" fill="none" stroke="transparent" stroke-width="12" style="cursor: pointer; pointer-events: all;"></path><path d="M 158 239 C 158 299.5 134 299.5 134 360" fill="none" stroke="#444450" stroke-width="1.5" marker-end="url(#arrow)"></path></g><g data-conn-id="c7"><path d="M 134 119 C 134 179 158 108 158 168" fill="none" stroke="transparent" stroke-width="12" style="cursor: pointer; pointer-events: all;"></path><path d="M 134 119 C 134 179 158 108 158 168" fill="none" stroke="#444450" stroke-width="1.5" marker-end="url(#arrow)"></path></g></svg>
+        <svg id="svg-layer" width="4000" height="4000"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#7c8799"　stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><g data-conn-id="c5"><path d="M 158 239 C 158 299.5 134 299.5 134 360" fill="none" stroke="transparent" stroke-width="12" style="cursor: pointer; pointer-events: all;"></path><path d="M 158 239 C 158 299.5 134 299.5 134 360" fill="none" stroke="#444450" stroke-width="1.5" marker-end="url(#arrow)"></path></g><g data-conn-id="c7"><path d="M 134 119 C 134 179 158 108 158 168" fill="none" stroke="transparent" stroke-width="12" style="cursor: pointer; pointer-events: all;"></path><path d="M 134 119 C 134 179 158 108 158 168" fill="none" stroke="#444450" stroke-width="1.5" marker-end="url(#arrow)"></path></g></svg>
       <div id="node-n2" class="flow-node node-process" style="left: 88px; top: 168px; width: 140px;">
     <div class="node-inner">
       <div class="node-body" style="">
@@ -1019,7 +1010,7 @@ function renderConn(id) {
   const line = document.createElementNS('http://www.w3.org/2000/svg','path');
   line.setAttribute('d', path);
   line.setAttribute('fill','none');
-  line.setAttribute('stroke', state.selected.has('conn-'+id) ? '#5b9cf6' : '#444450');
+  line.setAttribute('stroke', state.selected.has('conn-'+id) ? '#4f8df5' : '#7c8799');
   line.setAttribute('stroke-width','1.5');
   line.setAttribute('marker-end','url(#arrow)');
   g.appendChild(hit);
